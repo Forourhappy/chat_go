@@ -24,10 +24,15 @@ func NewServer() *Network {
 		AllowCredentials: true,
 	}))
 
+	r := NewRoom()
+	go r.RunInit()
+
+	n.engine.GET("/room", r.SocketServe)
+
 	return n
 }
 
 func (n *Network) StartServer() error {
 	log.Println("Starting server")
-	return n.engine.Run(":8080")
+	return n.engine.Run(":8081")
 }
